@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Countdown Widget</title>
+<style>
+  body {
+    margin: 0;
+    font-size: 14px;
+    color: #000; /* 기본 텍스트 컬러 */
+    font-family: Arial, sans-serif;
+  }
+  #countdown {
+    padding: 10px;
+    text-align: center;
+    color: white;
+    margin-top: 3px; /* 위 여백 */
+  }
+  #countdown b {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <div id="countdown">로딩 중...</div>
+
+  <script>
+    function getNextTargetDate() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+    
+      const sixteenth = new Date(year, month, 16); // 16일 00:00
+      const firstDayNextMonth = new Date(year, month + 1, 1); // 다음 달 1일 00:00
+    
+      if (now < sixteenth) {
+        return sixteenth;
+      } else if (now < firstDayNextMonth) {
+        return firstDayNextMonth;
+      } else {
+        return new Date(year, month + 1, 16);
+      }
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const target = getNextTargetDate();
+      const diff = target - now;
+
+      if (diff > 0) {
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / (1000 * 60)) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+
+        document.getElementById("countdown").innerHTML =
+          `챌린지 마감 <b>${d}일 ${h}시간 ${m}분</b> 남음`;
+      } else {
+        document.getElementById("countdown").innerHTML = "다음 주기를 계산 중...";
+      }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
